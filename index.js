@@ -3,12 +3,12 @@
         return {move}
     }
     
-    let Gameboard = {
+    const Gameboard = {
         board: [],
         boardCellFabric () {
             let board = document.createElement('div');
             board.classList = 'board__cell';
-            board.addEventListener('click', (e) => this.doMove(e));
+            board.addEventListener('click', (e) => controller.doMove(e));
             return board;
         },
         generateBoard (num) {
@@ -25,16 +25,10 @@
         getBoardRoot () {
             return document.querySelector('.board');
         },
-        doMove (e) {
-            let target = e.target;
-            if(target.textContent === "") {
-                target.textContent = controller.currentPlayer.move;
-                controller.switchPlayerMove();
-            }
-        },
+        
     }
     
-    let controller = {
+    const controller = {
         players: [
             Player("x"),
             Player("o"),
@@ -46,6 +40,13 @@
             this.currentPlayer = this.currentPlayer == this.players[0] ? 
                 this.currentPlayer = this.players[1]: 
                 this.currentPlayer = this.players[0];
+        },
+        doMove (e) {
+            let target = e.target;
+            if(target.textContent === "") {
+                target.textContent = this.currentPlayer.move;
+                this.switchPlayerMove();
+            }
         },
     }
     controller.setFirstMove();
