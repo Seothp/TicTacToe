@@ -4,23 +4,33 @@
     }
     
     const Gameboard = () => {
-        let board = [];
+        let board = [
+            [],
+            [],
+            [],
+        ];
         const boardCellFabric = () => {
             let board = document.createElement('div');
             board.classList = 'board__cell';
             board.addEventListener('click', (e) => controller.doMove(e));
             return board;
         }
-        const generateBoard = (num) => {
-            for (let i = 0; i < num*num; i++) {
-                board.push(boardCellFabric());
+        const generateBoard = () => {
+            for (let i = 0; i < 3; i++) {
+                board[0].push(boardCellFabric());
+                board[1].push(boardCellFabric());
+                board[2].push(boardCellFabric());
             }
+            console.log(gameboard.getBoard());
         }
         const renderBoard = () => {
-            gameboard.generateBoard(3);
+            gameboard.generateBoard();
             let boardRoot = getBoardRoot();
             for (let i = 0; i < board.length; i++) {
-                boardRoot.append(board[i]);
+                for (let j = 0; j < board[i].length; j++) {
+                    boardRoot.append(board[i][j]);
+                }
+                
             }
         }
         const getBoardRoot = () => {
@@ -29,7 +39,22 @@
         const getBoard = () => {
             return board;
         }
+        const getBoardInnerHtml = () => {
+            let result = [
+                [],
+                [],
+                [],
+            ];
+            for (let i = 0; i < board.length; i++) {
+                for (let j = 0; j < board[i].length; j++) {
+                    result[i][j] = board[i][j].innerHTML;
+                }
+                
+            }
+            return result;
+        }
         return {
+            getBoardInnerHtml,
             boardCellFabric,
             generateBoard,
             renderBoard,
@@ -95,35 +120,9 @@
             }
         }
         const checkGameResult = () => {
-            const boardHTML = gameboard.getBoard().map((el)=>{
-                return el.innerHTML;
-            });
-            console.log(boardHTML);
-            if (boardHTML[0] !=='' && boardHTML[0] === boardHTML[1] && boardHTML[0] === boardHTML[2]) {
-                console.log("end game");
-            }
-            if (boardHTML[3] !=='' && boardHTML[3] === boardHTML[4] && boardHTML[3] === boardHTML[5]) {
-                console.log("end game");
-            }
-            if (boardHTML[6] !=='' && boardHTML[6] === boardHTML[7] && boardHTML[6] === boardHTML[8]) {
-                console.log("end game");
-            }
-            
-            if (boardHTML[0] !=='' && boardHTML[0] === boardHTML[3] && boardHTML[0] === boardHTML[6]) {
-                console.log("end game");
-            }
-            if (boardHTML[1] !=='' && boardHTML[1] === boardHTML[4] && boardHTML[1] === boardHTML[7]) {
-                console.log("end game");
-            }
-            if (boardHTML[2] !=='' && boardHTML[2] === boardHTML[5] && boardHTML[2] === boardHTML[8]) {
-                console.log("end game");
-            }
-            if (boardHTML[0] !=='' && boardHTML[0] === boardHTML[4] && boardHTML[0] === boardHTML[8]) {
-                console.log("end game");
-            }
-            if (boardHTML[2] !=='' && boardHTML[2] === boardHTML[4] && boardHTML[2] === boardHTML[6]) {
-                console.log("end game");
-            }
+            const boardInnerHtml = gameboard.getBoardInnerHtml()
+            isEqualMatrixVal(boardInnerHtml, [[0, 0], [0, 1], [0, 2]])
+            console.log(boardInnerHtml)
         }
         return {
             checkGameResult,
