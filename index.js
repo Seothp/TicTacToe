@@ -22,6 +22,10 @@
                 }
             }
             return result === params.length;
+        },
+        hidePlayersForm() {
+            const form = document.querySelector('.players__names');
+            form.style.display = 'none';
         }
     }
 
@@ -43,7 +47,6 @@
                 board[1].push(boardCellFabric());
                 board[2].push(boardCellFabric());
             }
-            console.log(gameboard.getBoard());
         }
         const renderBoard = () => {
             clearBoard();
@@ -115,9 +118,17 @@
         }
     })();
     const Players = (() => {
+        let playersNames = [];
         let players = [];
-        const createPlayers = (names) => {
-            players = [Player(names[0], "x"), Player(names[1], "o")];
+        const setPlayersNames = () => {
+            const firstName = document.getElementById('first-player-name');
+            const secondName = document.getElementById('second-player-name');
+            playersNames = [firstName.value, secondName.value];
+            firstName.value = "";
+            secondName.value = "";
+        }
+        const createPlayers = () => {
+            players = [Player(playersNames[0], "x"), Player(playersNames[1], "o")];
         }
         const getPlayers = () => {
             return players;
@@ -125,7 +136,20 @@
         const getCurrentPlayer = () => {
             return Players.currentPlayer;
         }
+        const setCurrentPlayer = () => {
+            Players.currentPlayer = players[0]
+        }
+        const switchCurrentPlayer = () => {
+            Players.currentPlayer = Players.currentPlayer == players[0] ? 
+            Players.currentPlayer = players[1]: 
+            Players.currentPlayer = players[0];
+            Message.renderMessage();
+            
+        }
         return {
+            switchCurrentPlayer,
+            setCurrentPlayer,
+            setPlayersNames,
             getCurrentPlayer,
             createPlayers,
             getPlayers,
@@ -135,22 +159,24 @@
     const controller = (() => {
         let players = [];
         const startGame = () => {
-            gameboard.renderBoard();
             players = Players.getPlayers();
-            Players.currentPlayer = players[0];
+            gameboard.renderBoard();
+            Players.setPlayersNames();
+            Players.createPlayers();
+            Players.setCurrentPlayer();
+            Operator.hidePlayersForm();
+        }
+        const restartGame = () => {
+            players = Players.getPlayers();
+            gameboard.renderBoard();
+            Players.setCurrentPlayer();
         }
         const endGame = () => {
             const name = Players.getCurrentPlayer().name;
             gameboard.getBoardRoot().innerHTML = `${name} победил, игра окончена`;
             Message.clearMessage();
         }
-        const switchPlayerMove = () => {
-            Players.currentPlayer = Players.currentPlayer == players[0] ? 
-            Players.currentPlayer = players[1]: 
-            Players.currentPlayer = players[0];
-            Message.renderMessage();
-            
-        }
+        
         const doMove = async (e) => {
             let target = e.target;
             if(target.textContent === "") {
@@ -158,7 +184,7 @@
                 if (checkGameResult()) {
                     endGame();
                 } else {
-                    switchPlayerMove();
+                    Players.switchCurrentPlayer();
                 };
             }
         }
@@ -185,26 +211,24 @@
                 )
             }
             if (checkVericalLines() || checkHorisontalLines() || checkDiagonalLines()) {
-                console.log('game is end');
                 return true;
             } else {
                 return false
             }
         }
         return {
+            restartGame,
             checkGameResult,
             startGame,
-            switchPlayerMove,
             doMove,
         }
     })();
 
-    const btn = document.querySelector('.restart-game-btn');
-    btn.addEventListener('click',  controller.startGame);
-
+    const btnRestart = document.querySelector('.restart-game-btn');
+    btnRestart.addEventListener('click',  controller.restartGame);
+    const btnStart = document.querySelector('.start-game-btn');
+    btnStart.addEventListener('click',  controller.startGame);
 
     const gameboard = Gameboard();
-    Players.createPlayers(["Vanya", "Zaur"]);
-    controller.startGame();
-    Message.renderMessage();
+    
 }());
