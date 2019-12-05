@@ -26,6 +26,14 @@
         hidePlayersForm() {
             const form = document.querySelector('.players__names');
             form.style.display = 'none';
+        },
+        hideStartGameBtn() {
+            const btn = document.querySelector('.start-game-btn');
+            btn.style.display = 'none';
+        },
+        showRestartGameBtn() {
+            const btn = document.querySelector('.restart-game-btn');
+            btn.style.display = 'inline';
         }
     }
 
@@ -165,6 +173,8 @@
             Players.createPlayers();
             Players.setCurrentPlayer();
             Operator.hidePlayersForm();
+            Operator.hideStartGameBtn();
+            Operator.showRestartGameBtn();
         }
         const restartGame = () => {
             players = Players.getPlayers();
