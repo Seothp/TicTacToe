@@ -140,7 +140,8 @@
             Players.currentPlayer = players[0];
         }
         const endGame = () => {
-            gameboard.getBoardRoot().innerHTML = "Игра окончена";
+            const name = Players.getCurrentPlayer().name;
+            gameboard.getBoardRoot().innerHTML = `${name} победил, игра окончена`;
             Message.clearMessage();
         }
         const switchPlayerMove = () => {
@@ -154,8 +155,11 @@
             let target = e.target;
             if(target.textContent === "") {
                 target.textContent = Players.currentPlayer.move;
-                checkGameResult();
-                switchPlayerMove();
+                if (checkGameResult()) {
+                    endGame();
+                } else {
+                    switchPlayerMove();
+                };
             }
         }
         const checkGameResult = () => {
@@ -182,7 +186,9 @@
             }
             if (checkVericalLines() || checkHorisontalLines() || checkDiagonalLines()) {
                 console.log('game is end');
-                setTimeout(endGame, 1000);
+                return true;
+            } else {
+                return false
             }
         }
         return {
