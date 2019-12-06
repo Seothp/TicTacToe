@@ -51,7 +51,7 @@
         const boardCellFabric = () => {
             let board = document.createElement('div');
             board.classList = 'board__cell';
-            board.addEventListener('click', (e) => controller.doMove(e));
+            board.addEventListener('click', (e) => Controller.doMove(e));
             return board;
         }
         const generateBoard = () => {
@@ -130,6 +130,7 @@
             clearMessage,
         }
     })();
+
     const Players = (() => {
         let playersNames = [];
         let players = [];
@@ -169,7 +170,7 @@
         }
     })();
 
-    const controller = (() => {
+    const Controller = (() => {
         let players = [];
         const startGame = () => {
             players = Players.getPlayers();
@@ -225,11 +226,7 @@
                     Operator.isEqualMatrixVal(boardInnerHtml, [[0, 2], [1, 1], [2, 0]])
                 )
             }
-            if (checkVericalLines() || checkHorisontalLines() || checkDiagonalLines()) {
-                return true;
-            } else {
-                return false
-            }
+            return (checkVericalLines() || checkHorisontalLines() || checkDiagonalLines())
         }
         return {
             restartGame,
@@ -240,9 +237,9 @@
     })();
 
     const btnRestart = document.querySelector('.restart-game-btn');
-    btnRestart.addEventListener('click',  controller.restartGame);
+    btnRestart.addEventListener('click',  Controller.restartGame);
     const btnStart = document.querySelector('.start-game-btn');
-    btnStart.addEventListener('click',  controller.startGame);
+    btnStart.addEventListener('click',  Controller.startGame);
 
     const gameboard = Gameboard();
     
