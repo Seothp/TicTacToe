@@ -16,9 +16,14 @@
             let result = 1;
             for (let i = 0; i < params.length; i++) {
                 if (!(params.length <= i+1)){
-                    const first = matrix[params[i][0]][params[i][1]];
-                    const second = matrix[params[i + 1][0]][params[i + 1][1]];
-                    '' !== first && first === second ? result++: null;
+                    let x = params[i][0];
+                    let y = params[i][1];
+                    const first = matrix[x][y];
+
+                    x = params[i + 1][0];
+                    y = params[i + 1][1];
+                    const second = matrix[x][y];
+                    first && first === second ? result++ : null;
                 }
             }
             return result === params.length;
