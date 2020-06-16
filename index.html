@@ -9,24 +9,31 @@
     <title>Document</title>
 </head>
 <body>
-    <div class="players__names">
-        <span class="text">Введите имена игроков.</span>
-        <label class="players__name-label">
-            <input placeholder="Имя первого игрока" type="text" class="players__name" id="first-player-name">
-        </label>
-        <label class="players__name-label">
-            <input placeholder="Имя второго игрока" type="text" class="players__name" id="second-player-name">
-        </label>
-    </div>
     <div class="buttons">
-        <button class="restart-game-btn">restart game</button>
-        <button class="start-game-btn">start game</button>
+        <button class="new-game-btn">New game</button>
     </div>
     <div class="game">
-        <div class="board"></div>
+        <div class="board" id="board"></div>
     </div>
-    <div class="message">
+    <div class="modal-wrapper hidden start-modal">
+        <div class="modal">
+            <div class="players__names">
+                <span class="text">Введите имена игроков.</span>
+                <label class="players__name-label">
+                    <input placeholder="Имя первого игрока" type="text" class="players__name" id="first-player-name">
+                </label>
+                <label class="players__name-label">
+                    <input placeholder="Имя второго игрока" type="text" class="players__name" id="second-player-name">
+                </label>
+            </div>
+            <button class="start-game-btn">start game</button>
+        </div>
     </div>
-    
+    <div class="modal-wrapper hidden end-modal">
+        <div class="modal">
+            <div class="modal-content"></div>
+            <button class="restart-game-btn">restart game</button>
+        </div>
+    </div>
 </body>
 </html>
