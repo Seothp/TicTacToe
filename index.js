@@ -1,15 +1,52 @@
+const CIRCLE = `
+    <div class="circle" style="
+        display: block; 
+        border-radius: 50%; 
+        border: 8px solid black; 
+        width: 75px; 
+        height: 75px;
+    "></div>
+`
+const CROSS = `
+    <div class="cross" style="position: relative; width: 75px; height: 75px;">
+        <div class="cross-line1" style=
+            "position: absolute; 
+            top: 50%; 
+            left: 50%;
+            width: 100px;
+            height: 8px;
+            transform: translate(-50%, 50%) rotate(45deg);
+            background: black;"
+        ></div>
+        <div class="cross-line2" style=
+            "position: absolute; 
+            top: 50%; 
+            left: 50%; 
+            width: 100px;
+            height: 8px;
+            transform: translate(-50%, 50%) rotate(-45deg);
+            background: black;"
+        ></div>
+    </div>
+`
 class Game {
     constructor(name1, name2) {
+        this.moves = {
+            o: CIRCLE,
+            x: CROSS,
+        }
         this.players = [
             {
-                moveType: 'x',
+                moveType: this.moves['o'],
                 name: name1
             }, {
-                moveType: 'o',
+                moveType: this.moves['x'],
                 name: name2
             }
         ]
         this.currentPlayer = this.players[0]
+        this.board = document.getElementById('board')
+        this.endGameModal = new bootstrap.Modal(document.getElementById('endGameModal'))
     }
     gameboard = []
     startGame() {
@@ -81,39 +118,23 @@ class Game {
             this.isEqualVerticalLines()
     }
     endGame() {
-        console.log('game has ended', this.currentPlayer.name, 'is won')
-        const modalContent = modalEnd.querySelector('.modal-content')
-        modalContent.textContent = `Game has ended, ${this.currentPlayer.name} is won`
-        modalEnd.classList.toggle('hidden')
+        console.log()
+        console.log(this.endGameModal._element)
+        const modalBody = this.endGameModal._element.querySelector('#end-game-body')
+        modalBody.textContent = `game has ended ${this.currentPlayer.name} is won`
+        this.endGameModal.toggle()
     }
     render() {
-        const board = document.getElementById('board')
-        board.textContent = ''
+        this.board.textContent = ''
         this.gameboard.forEach(el => board.append(el))
     }
 }
-const newGameButton = document.querySelector('.new-game-btn')
 const startGameButton = document.querySelector('.start-game-btn')
 const restartGameButton = document.querySelector('restart-game-btn')
-const modalStart = document.querySelector('.start-modal')
-const modalEnd = document.querySelector('.end-modal')
-const modal = document.getElementsByClassName('modal-wrapper')
-Array.from(modal).forEach(modal => {
-    modal.addEventListener('click', ({ target }) => {
-        const isWrapper = target.className.indexOf('modal-wrapper') !== -1
-        if (isWrapper) {
-            target.classList.toggle('hidden')
-        }
-    })
-})
 
-newGameButton.addEventListener('click', e => {
-    modalStart.classList.toggle('hidden')
-})
 startGameButton.addEventListener('click', e => {
     const firstName = document.getElementById('first-player-name').value
     const secondName = document.getElementById('second-player-name').value
     const game = new Game(firstName, secondName)
     game.startGame()
-    modalStart.classList.toggle('hidden')
 })
