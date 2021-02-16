@@ -37,10 +37,10 @@ class Game {
         }
         this.players = [
             {
-                moveType: this.moves['o'],
+                moveType: this.moves.x,
                 name: name1
             }, {
-                moveType: this.moves['x'],
+                moveType: this.moves.o,
                 name: name2
             }
         ]
